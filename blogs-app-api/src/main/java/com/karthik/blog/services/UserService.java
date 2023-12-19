@@ -12,5 +12,6 @@ public interface UserService {
 	UserDTO getuserById(Integer id);
 	List<UserDTO> getAll();
 	void delete(Integer id);
+	boolean isEmailUnique(String email);
 
 }

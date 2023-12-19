@@ -76,68 +76,32 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<UserDTO> getAll() {
-		// TODO Auto-generated method stub
-		
-		List<User> listofuser=this.userrepositories.findAll();
-		
-		
+	public List<UserDTO> getAll() {		
+		List<User> listofuser=this.userrepositories.findAll();		
 		List<UserDTO>listUserDTO=listofuser.stream().map(user->this.Usertodto(user)).collect(Collectors.toList());
 		return listUserDTO;
 	}
 
 	@Override
 	public void delete(Integer id) {
-		// TODO Auto-generated method stub
-		
 		User user=this.userrepositories.findById(id).orElseThrow(()-> new ResourceNotFoundException("User", " Id", id));
-		 
 this.userrepositories.delete(user);
 	}
 	
 	private User dtotoUser(UserDTO userdto) {
-		
-		
-		User user=this.modelmapper.map(userdto, User.class); 
-				
-				
-				
-//		user.setId(userdto.getId());
-//		user.setAbout(userdto.getAbout());
-//		user.setCity(userdto.getCity());
-//		user.setCountry(userdto.getCountry());
-//		user.setEmail(userdto.getEmail());
-//		user.setFirstName(userdto.getFirstName());
-//		user.setLastName(userdto.getLastName());
-//		user.setPassword(userdto.getPassword());
-//		user.setProvices(userdto.getProvices());
-//		user.setStreetAddress(userdto.getStreetAddress());
-//		user.setUserName(userdto.getUserName());
-//		user.setZipCode(userdto.getZipCode());
-
-		
+				User user=this.modelmapper.map(userdto, User.class); 
 		return user;
 	}
 	
 	
 private UserDTO Usertodto(User user) {
-		
-		
 		UserDTO useruserDTO= this.modelmapper.map(user, UserDTO.class);
-//		useruserDTO.setId(user.getId());
-//		useruserDTO.setAbout(user.getAbout());
-//		useruserDTO.setCity(user.getCity());
-//		useruserDTO.setCountry(user.getCountry());
-//		useruserDTO.setEmail(user.getEmail());
-//		useruserDTO.setFirstName(user.getFirstName());
-//		useruserDTO.setLastName(user.getLastName());
-//		useruserDTO.setPassword(user.getPassword());
-//		useruserDTO.setProvices(user.getProvices());
-//		useruserDTO.setStreetAddress(user.getStreetAddress());
-//		useruserDTO.setUserName(user.getUserName());
-//		useruserDTO.setZipCode(user.getZipCode());
-
-		
 		return useruserDTO;
 	}
+
+
+@Override
+public boolean isEmailUnique(String email) {
+    return userrepositories.findByEmail(email).isEmpty();
+}
 }

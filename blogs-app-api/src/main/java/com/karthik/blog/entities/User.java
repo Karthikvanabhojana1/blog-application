@@ -1,12 +1,18 @@
 package com.karthik.blog.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.annotation.Generated;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +24,7 @@ import lombok.Setter;
 @Setter
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column(name="mail_id", nullable = false, length = 70)
 	private String email;
@@ -42,4 +48,8 @@ public class User {
 	private String about;
 	@Column(name="password", nullable = false, length = 20)
 	private String password;
+	
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+	private List<Post> post=new ArrayList<>();
+	
 }
