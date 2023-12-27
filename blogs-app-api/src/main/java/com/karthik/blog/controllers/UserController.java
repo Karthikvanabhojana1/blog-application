@@ -33,12 +33,12 @@ public class UserController {
 	@PostMapping("/create")
 	public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userdto) {
 
-		UserDTO createdUserDTO = this.userservice.createUser(userdto);
-		if (!userservice.isEmailUnique(userdto.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-		}
+//		if (!userservice.isEmailUnique(userdto.getEmail())) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+//		}
+		this.userservice.createUser(userdto);
 
-		return new ResponseEntity<>(createdUserDTO, HttpStatus.CREATED);
+		return new ResponseEntity<>(this.userservice.createUser(userdto), HttpStatus.CREATED);
 
 	}
 

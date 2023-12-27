@@ -11,7 +11,7 @@ public interface CategoryService {
 	
 	CategoryDTO createUser(CategoryDTO category) ;
 	CategoryDTO updateUser(CategoryDTO category,Integer categoryid) ;
-	CategoryDTO getuserById(Integer categoryid);
+	CategoryDTO getcategoryById(Integer categoryid);
 	List<CategoryDTO> getAll();
 	void delete(Integer categoryid);
 

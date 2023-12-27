@@ -1,5 +1,10 @@
 package com.karthik.blog.payloads;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.karthik.blog.entities.Post;
+
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -9,12 +14,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 public class UserDTO {
 
-	private int id;
+	private Integer id;
 	@Email(message = "Your Email Address is not Valid !!")
 	@Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
 	private String email;
@@ -41,4 +46,6 @@ public class UserDTO {
 	@NotEmpty(message = "Your Password  must not be Empty !!")
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password must be at least 8 characters long and include at least one alphabetical character, one numeric character, and one special character (@, $, !, %, *, #, ?, or &)")
 	private String password;
+//	private List<Post> post=new ArrayList<>();
+ 
 }

@@ -27,7 +27,6 @@ public class Post {
 	@Column(length = 10000, nullable = false)
 	private String content;
 	private Date addedDate;
-	
 	@ManyToOne
 	private Categories categories;
 	@ManyToOne

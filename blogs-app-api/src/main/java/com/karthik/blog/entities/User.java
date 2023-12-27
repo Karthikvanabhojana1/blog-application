@@ -24,8 +24,8 @@ import lombok.Setter;
 @Setter
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Integer id;
 	@Column(name="mail_id", nullable = false, length = 70)
 	private String email;
 	@Column(name="first_name", nullable = false, length = 70)
