@@ -25,8 +25,6 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public CategoryDTO createUser(CategoryDTO category) {
-		// TODO Auto-generated method stub
-
 		Categories categories = this.modelmapper.map(category, Categories.class);
 		Categories addedcategorie = this.categoryRepo.save(categories);
 

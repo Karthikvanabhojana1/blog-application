@@ -5,16 +5,18 @@ import java.util.List;
 import com.karthik.blog.entities.Post;
 import com.karthik.blog.payloads.CategoryDTO;
 import com.karthik.blog.payloads.PostDTO;
+import com.karthik.blog.payloads.PostResponse;
 
 public interface PostService {
 	PostDTO createPost(PostDTO postDTO,Integer categoryId,Integer userId);
 	PostDTO updatePost(PostDTO postDTO,Integer postId);
-	List<PostDTO> getAllPosts();
+	PostResponse getAllPosts(int pageNumber, int pageSize, String sortBy, String sortDirection);
 	
 	PostDTO getpostbyId(Integer postId);
-	List<PostDTO> getpostbyCategory(Integer categoryId);
+	PostResponse getpostbyCategory(Integer categoryId,int pageNumber, int pageSize, String sortBy, String sortDirection);
 
-	List<PostDTO> getpostbyUser(Integer userId);
-	List<PostDTO> serarchPost(String keywords);
+	PostResponse getpostbyUser(Integer userId,int pageNumber, int pageSize, String sortBy, String sortDirection);
+	PostResponse searchPost(String keywords,int pageNumber, int pageSize, String sortBy, String sortDirection);
 	void delete(Integer postId);
+	List<PostDTO> searchTitle(String keyword);
 }

@@ -6,6 +6,10 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.karthik.blog.entities.Categories;
@@ -14,6 +18,7 @@ import com.karthik.blog.entities.User;
 import com.karthik.blog.exception.ResourceNotFoundException;
 import com.karthik.blog.payloads.CategoryDTO;
 import com.karthik.blog.payloads.PostDTO;
+import com.karthik.blog.payloads.PostResponse;
 import com.karthik.blog.payloads.UserDTO;
 import com.karthik.blog.repositories.CategoryRepository;
 import com.karthik.blog.repositories.PostRepository;
@@ -47,73 +52,161 @@ public class PostServiceImpl implements PostService {
 		post.setUser(user);
 		Post newPost = this.postRepo.save(post);
 		return this.modelMapper.map(newPost, PostDTO.class);
-		
 
 	}
 
 	@Override
 	public PostDTO updatePost(PostDTO postDTO, Integer postId) {
 		// TODO Auto-generated method stub
-		
-		return null;
+		Post post = this.postRepo.findById(postId)
+				.orElseThrow(() -> new ResourceNotFoundException("Posts", " Post Id", postId));
+
+		post.setPostTitle(postDTO.getPostTitle());
+		post.setContent(postDTO.getContent());
+		Post updated = this.postRepo.save(post);
+
+		return this.modelMapper.map(updated, PostDTO.class);
 	}
 
 	@Override
-	public List<PostDTO> getAllPosts() {
+	public PostResponse getAllPosts(int pageNumber, int pageSize, String sortBy, String sortDirection) {
 		// TODO Auto-generated method stub
-		List<Post> listofPosts = this.postRepo.findAll();
-		List<PostDTO> listofPostsDTO =listofPosts.stream().map((post)-> this.modelMapper.map(post, PostDTO.class)).collect(Collectors.toList());
-		
-		
+		Sort sort = (sortDirection.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending()
+				: Sort.by(sortBy).descending();
 
-		return listofPostsDTO;
+		Pageable p = PageRequest.of(pageNumber, pageSize, sort);
+
+		Page<Post> pagepost = this.postRepo.findAll(p);
+		List<Post> listofPosts = pagepost.getContent();
+		List<PostDTO> listofPostsDTO = listofPosts.stream().map((post) -> this.modelMapper.map(post, PostDTO.class))
+				.collect(Collectors.toList());
+
+		PostResponse postresponse = new PostResponse();
+		postresponse.setContent(listofPostsDTO);
+		postresponse.setPageNumber(pagepost.getNumber());
+		postresponse.setPagesize(pagepost.getSize());
+		postresponse.setTotalElements(pagepost.getTotalElements());
+		postresponse.setTotalPages(pagepost.getTotalPages());
+		postresponse.setLastpage(pagepost.isLast());
+		return postresponse;
 
 	}
 
 	@Override
 	public PostDTO getpostbyId(Integer postId) {
 		// TODO Auto-generated method stub
-		return null;
+		Post post = this.postRepo.findById(postId)
+				.orElseThrow(() -> new ResourceNotFoundException("Posts", " Post Id", postId));
+
+		return this.modelMapper.map(post, PostDTO.class);
 	}
 
 	@Override
-	public List<PostDTO> getpostbyCategory(Integer categoryId) {
+	public PostResponse getpostbyCategory(Integer categoryId, int pageNumber, int pageSize, String sortBy,
+			String sortDirection) {
 		// TODO Auto-generated method stub
+		Sort sort = (sortDirection.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending()
+				: Sort.by(sortBy).descending();
+
 		Categories categories = this.categoryRepo.findById(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException("Categories", " Category Id", categoryId));
+		Pageable p = PageRequest.of(pageNumber, pageSize, sort);
 
-		List<Post> listofPosts=this.postRepo.findByCategories(categories);
-	List<PostDTO> listofpostsbycategory =listofPosts.stream().map((post)-> this.modelMapper.map(post, PostDTO.class)).collect(Collectors.toList());
-		
-		
+		Page<Post> pagepost = this.postRepo.findByCategories(categories, p);
 
-		return listofpostsbycategory;	}
+		List<Post> listofPosts = pagepost.getContent();
+
+		List<PostDTO> listofpostsbycategory = listofPosts.stream()
+				.map((post) -> this.modelMapper.map(post, PostDTO.class)).collect(Collectors.toList());
+
+//	
+//	
+//	Pageable p=PageRequest.of(pageNumber, pageSize);
+//	
+//	Page<Post> pagepost = this.postRepo.findAll(p);
+//	List<Post> listofPosts = pagepost.getContent();
+//	List<PostDTO> listofPostsDTO =listofPosts.stream().map((post)-> this.modelMapper.map(post, PostDTO.class)).collect(Collectors.toList());
+//	
+
+		PostResponse postresponsebycategory = new PostResponse();
+		postresponsebycategory.setContent(listofpostsbycategory);
+		postresponsebycategory.setPageNumber(pagepost.getNumber());
+		postresponsebycategory.setPagesize(pagepost.getSize());
+		postresponsebycategory.setTotalElements(pagepost.getTotalElements());
+		postresponsebycategory.setTotalPages(pagepost.getTotalPages());
+		postresponsebycategory.setLastpage(pagepost.isLast());
+		return postresponsebycategory;
+
+	}
 
 	@Override
-	public List<PostDTO> getpostbyUser(Integer userId) {
-		User user=this.userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User", " Id", userId));
+	public PostResponse getpostbyUser(Integer userId, int pageNumber, int pageSize, String sortBy,
+			String sortDirection) {
+		User user = this.userRepo.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User", " Id", userId));
+		Sort sort = (sortDirection.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending()
+				: Sort.by(sortBy).descending();
 
+		Pageable p = PageRequest.of(pageNumber, pageSize, sort);
 
-		List<Post> listofPosts=this.postRepo.findByUser(user);
-	List<PostDTO> listofpostbyUser =listofPosts.stream().map((post)-> this.modelMapper.map(post, PostDTO.class)).collect(Collectors.toList());
-		
-		
+		Page<Post> pagepost = this.postRepo.findByUser(user, p);
+		List<Post> listofPosts = pagepost.getContent();
 
-		return listofpostbyUser;	}
+		List<PostDTO> listofpostbyUser = listofPosts.stream().map((post) -> this.modelMapper.map(post, PostDTO.class))
+				.collect(Collectors.toList());
 
-	
-	
+		PostResponse postresponsebyuser = new PostResponse();
+		postresponsebyuser.setContent(listofpostbyUser);
+		postresponsebyuser.setPageNumber(pagepost.getNumber());
+		postresponsebyuser.setPagesize(pagepost.getSize());
+		postresponsebyuser.setTotalElements(pagepost.getTotalElements());
+		postresponsebyuser.setTotalPages(pagepost.getTotalPages());
+		postresponsebyuser.setLastpage(pagepost.isLast());
+		return postresponsebyuser;
+
+	}
 
 	@Override
-	public List<PostDTO> serarchPost(String keywords) {
-		// TODO Auto-generated method stub
-		return null;
+	public PostResponse searchPost(String keywords, int pageNumber, int pageSize, String sortBy, String sortDirection) {
+		// TODO Auto-generated method stub\
+
+		Sort sort = (sortDirection.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending()
+				: Sort.by(sortBy).descending();
+
+		Pageable p = PageRequest.of(pageNumber, pageSize, sort);
+
+		Page<Post> pagepost = this.postRepo.searchByContent(keywords, p);
+		List<Post> listofPosts = pagepost.getContent();
+
+		List<PostDTO> listofpostbyUser = listofPosts.stream().map((post) -> this.modelMapper.map(post, PostDTO.class))
+				.collect(Collectors.toList());
+
+		PostResponse postresponsebyuser = new PostResponse();
+		postresponsebyuser.setContent(listofpostbyUser);
+		postresponsebyuser.setPageNumber(pagepost.getNumber());
+		postresponsebyuser.setPagesize(pagepost.getSize());
+		postresponsebyuser.setTotalElements(pagepost.getTotalElements());
+		postresponsebyuser.setTotalPages(pagepost.getTotalPages());
+		postresponsebyuser.setLastpage(pagepost.isLast());
+		return postresponsebyuser;
 	}
 
 	@Override
 	public void delete(Integer postId) {
 		// TODO Auto-generated method stub
+		Post post = this.postRepo.findById(postId)
+				.orElseThrow(() -> new ResourceNotFoundException("Posts", " Post Id", postId));
+		this.postRepo.delete(post);
+	}
 
+	@Override
+	public List<PostDTO> searchTitle(String keyword) {
+		// TODO Auto-generated method stub
+		List<Post> listpost=postRepo.searchByTitle(keyword);
+
+		List<PostDTO> listofpostbyUser = listpost.stream().map((post) -> this.modelMapper.map(post, PostDTO.class))
+				.collect(Collectors.toList());
+		return listofpostbyUser;
 	}
 
 }
