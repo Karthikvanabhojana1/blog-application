@@ -17,7 +17,9 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	Page<Post> findByCategories(Categories categories,Pageable p);
 	@Query("SELECT p FROM Post p WHERE p.content LIKE :key")
     List<Post> searchByTitle(@Param("key") String title);
-	@Query("SELECT p FROM Post p WHERE p.content LIKE :content")
+//	@Query("SELECT p FROM Post p WHERE p.content LIKE :content")
+//	Page<Post> searchByContent(@Param("content") String content, Pageable pageable);
+	@Query("SELECT p FROM Post p WHERE LOWER(p.content) LIKE LOWER(:content)")
 	Page<Post> searchByContent(@Param("content") String content, Pageable pageable);
 
 }

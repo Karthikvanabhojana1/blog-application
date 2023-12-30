@@ -175,7 +175,7 @@ public class PostServiceImpl implements PostService {
 
 		Pageable p = PageRequest.of(pageNumber, pageSize, sort);
 
-		Page<Post> pagepost = this.postRepo.searchByContent(keywords, p);
+		Page<Post> pagepost = this.postRepo.searchByContent("%"+keywords+"%", p);
 		List<Post> listofPosts = pagepost.getContent();
 
 		List<PostDTO> listofpostbyUser = listofPosts.stream().map((post) -> this.modelMapper.map(post, PostDTO.class))
