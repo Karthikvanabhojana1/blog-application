@@ -1,6 +1,9 @@
 package com.karthik.blog.services;
 
+import java.io.IOException;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.karthik.blog.entities.Post;
 import com.karthik.blog.payloads.CategoryDTO;
@@ -8,7 +11,7 @@ import com.karthik.blog.payloads.PostDTO;
 import com.karthik.blog.payloads.PostResponse;
 
 public interface PostService {
-	PostDTO createPost(PostDTO postDTO,Integer categoryId,Integer userId);
+	PostDTO createPost(PostDTO postDTO,Integer categoryId,Integer userId,String path, MultipartFile file) throws IOException;
 	PostDTO updatePost(PostDTO postDTO,Integer postId);
 	PostResponse getAllPosts(int pageNumber, int pageSize, String sortBy, String sortDirection);
 	

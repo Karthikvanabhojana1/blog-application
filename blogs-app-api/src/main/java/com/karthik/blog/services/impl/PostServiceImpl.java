@@ -1,7 +1,12 @@
 package com.karthik.blog.services.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -11,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.karthik.blog.entities.Categories;
 import com.karthik.blog.entities.Post;
@@ -37,7 +43,7 @@ public class PostServiceImpl implements PostService {
 	private UserRepositories userRepo;
 
 	@Override
-	public PostDTO createPost(PostDTO postDTO, Integer categoryId, Integer userId) {
+	public PostDTO createPost(PostDTO postDTO, Integer categoryId, Integer userId,String path, MultipartFile file) throws IOException {
 		// TODO Auto-generated method stub
 
 		User user = this.userRepo.findById(userId)
@@ -46,11 +52,31 @@ public class PostServiceImpl implements PostService {
 				.orElseThrow(() -> new ResourceNotFoundException("Categories", " Category Id", categoryId));
 
 		Post post = this.modelMapper.map(postDTO, Post.class);
-		post.setImageName("Default.jpeg");
 		post.setAddedDate(new Date());
 		post.setCategories(category);
 		post.setUser(user);
 		Post newPost = this.postRepo.save(post);
+		
+		
+		String name=file.getOriginalFilename();
+		String randomId=UUID.randomUUID().toString();
+		String fileName1=randomId.concat(name.substring(name.lastIndexOf(".")));
+		//Full Path
+		
+		String filePath=path+File.separator+fileName1;
+		//create Image folder if not created
+		File f=new File(path);
+		
+		if(!f.exists()) {
+			f.mkdir();
+		}
+	
+		
+		
+		//file copy
+		Files.copy(file.getInputStream(), Paths.get(filePath));
+		post.setImageName(filePath);
+
 		return this.modelMapper.map(newPost, PostDTO.class);
 
 	}

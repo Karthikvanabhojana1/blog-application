@@ -14,10 +14,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PostDTO {
 	private Integer postId;
-	@Size(max = 100, message = "Title should not exceed 100 characters !!")
+	@Size(min=1, max = 100, message = "Title should not exceed 100 characters !!")
 	private String postTitle;
 	private String imageName;
-	@Size(max = 10000, message = "Content should not exceed 10000 characters !!")
+	@Size(min=5, max = 10000, message = "Content should not exceed 10000 characters !!")
 	private String content;
 	private Date addedDate;
 	private CategoryDTO categories;

@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import com.karthik.blog.payloads.APIResponse;
 
@@ -45,5 +46,23 @@ public class GlobalExceptionHandler {
 
 	        return new ResponseEntity<APIResponse>(api, HttpStatus.CONFLICT);
 	    }
+	 
+	 @ExceptionHandler(HandlerMethodValidationException.class)
+	    public ResponseEntity<APIResponse> handleIncompletePostException(HandlerMethodValidationException ex) {
+	        // Handle the exception and return an appropriate response
+	        String errorMessage = "The Content or the Post title Must not be Empty";
+			APIResponse api=new APIResponse(errorMessage,false);
 
+	        return new ResponseEntity<APIResponse>(api, HttpStatus.CONFLICT);
+	    }
+	 
+	 
+	 @ExceptionHandler(StringIndexOutOfBoundsException.class)
+	    public ResponseEntity<APIResponse> handleIncompletePostImageException(StringIndexOutOfBoundsException ex) {
+	        // Handle the exception and return an appropriate response
+	        String errorMessage = "Please Upload At least One Image";
+			APIResponse api=new APIResponse(errorMessage,false);
+
+	        return new ResponseEntity<APIResponse>(api, HttpStatus.CONFLICT);
+	    }
 }
