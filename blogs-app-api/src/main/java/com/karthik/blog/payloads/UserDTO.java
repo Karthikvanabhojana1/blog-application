@@ -50,7 +50,7 @@ public class UserDTO {
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password must be at least 8 characters long and include at least one alphabetical character, one numeric character, and one special character (@, $, !, %, *, #, ?, or &)")
 	private String password;
 	private List<Post> post=new ArrayList<>();
-	private List<Comment> comment=new ArrayList<>();
+	private List<CommentDTO> comments=new ArrayList<>();
 
  
 }

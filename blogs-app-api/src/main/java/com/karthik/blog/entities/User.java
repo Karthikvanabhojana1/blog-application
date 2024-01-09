@@ -3,6 +3,8 @@ package com.karthik.blog.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.annotation.Generated;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -48,12 +50,10 @@ public class User {
 	private String about;
 	@Column(name="password", nullable = false, length = 20)
 	private String password;
-	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
 	private List<Post> post=new ArrayList<>();
-	
-	
-
+	@JsonManagedReference
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
 	private List<Comment> comment=new ArrayList<>();
 }

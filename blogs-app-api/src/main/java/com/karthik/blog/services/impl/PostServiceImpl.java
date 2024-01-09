@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.karthik.blog.entities.Categories;
+import com.karthik.blog.entities.Comment;
 import com.karthik.blog.entities.Post;
 import com.karthik.blog.entities.User;
 import com.karthik.blog.exception.ResourceNotFoundException;
@@ -27,8 +28,10 @@ import com.karthik.blog.payloads.PostDTO;
 import com.karthik.blog.payloads.PostResponse;
 import com.karthik.blog.payloads.UserDTO;
 import com.karthik.blog.repositories.CategoryRepository;
+import com.karthik.blog.repositories.CommentsRepository;
 import com.karthik.blog.repositories.PostRepository;
 import com.karthik.blog.repositories.UserRepositories;
+import com.karthik.blog.services.CommentService;
 import com.karthik.blog.services.PostService;
 
 @Service
@@ -41,7 +44,8 @@ public class PostServiceImpl implements PostService {
 	private CategoryRepository categoryRepo;
 	@Autowired
 	private UserRepositories userRepo;
-
+	@Autowired
+	private CommentsRepository commentRepo;
 	@Override
 	public PostDTO createPost(PostDTO postDTO, Integer categoryId, Integer userId,String path, MultipartFile file) throws IOException {
 		// TODO Auto-generated method stub
@@ -120,11 +124,12 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public PostDTO getpostbyId(Integer postId) {
-		// TODO Auto-generated method stub
 		Post post = this.postRepo.findById(postId)
 				.orElseThrow(() -> new ResourceNotFoundException("Posts", " Post Id", postId));
 
-		return this.modelMapper.map(post, PostDTO.class);
+PostDTO postdto=this.modelMapper.map(post, PostDTO.class);
+
+		return postdto;
 	}
 
 	@Override

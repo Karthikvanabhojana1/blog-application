@@ -1,12 +1,10 @@
 package com.karthik.blog.payloads;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-import com.karthik.blog.entities.Categories;
 import com.karthik.blog.entities.Comment;
-import com.karthik.blog.entities.User;
 
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -25,7 +23,7 @@ public class PostDTO {
 	private Date addedDate;
 	private CategoryDTO categories;
 	private UserDTO user;
-	private Set<CommentDTO> comments=new HashSet<>();
+	private List<CommentDTO> comments=new ArrayList<>();
 
 }
 
