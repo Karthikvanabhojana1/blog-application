@@ -6,10 +6,12 @@ import java.util.Map;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import com.karthik.blog.payloads.APIResponse;
@@ -18,7 +20,7 @@ import com.karthik.blog.payloads.APIResponse;
 public class GlobalExceptionHandler {
 	
 	
-	
+
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<APIResponse> resourseNotfoundExceptionHandler(ResourceNotFoundException ex){
 		String msg=ex.getMessage();
