@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.karthik.blog.entities.Comment;
 import com.karthik.blog.entities.Post;
+import com.karthik.blog.entities.Role;
 
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
@@ -50,7 +51,8 @@ public class UserDTO {
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password must be at least 8 characters long and include at least one alphabetical character, one numeric character, and one special character (@, $, !, %, *, #, ?, or &)")
 	private String password;
 	private List<Post> post=new ArrayList<>();
-	private List<CommentDTO> comments=new ArrayList<>();
+	private Set<Role> roles=new HashSet<>();
+	private List<Comment> comments=new ArrayList<>();
 
  
 }

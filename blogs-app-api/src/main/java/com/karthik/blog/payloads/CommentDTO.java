@@ -16,4 +16,5 @@ public class CommentDTO {
 	private String content;
 
 	private UserDTO user;
+	private PostDTO post;
 }

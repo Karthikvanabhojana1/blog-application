@@ -239,5 +239,8 @@ PostDTO postdto=this.modelMapper.map(post, PostDTO.class);
 				.collect(Collectors.toList());
 		return listofpostbyUser;
 	}
+	
+	
+	
 
 }

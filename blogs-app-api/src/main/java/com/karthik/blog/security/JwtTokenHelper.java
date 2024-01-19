@@ -1,5 +1,6 @@
 package com.karthik.blog.security;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,20 +12,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+
 @Component
 public class JwtTokenHelper {
 
 	
 	public static final long JWT_TOKEN_VALIDITY=5*60*60;
-	private String secret="jwtTokenKey";
-
+	private String secret = Base64.getEncoder().encodeToString(Keys.secretKeyFor(SignatureAlgorithm.HS512).getEncoded());
+	
+	
 
     private SecretKey secretKey;
-
-    public JwtTokenHelper() {
-        // Generate a secure key for HS512
-        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    }
+//
+//    public JwtTokenHelper() {
+//        // Generate a secure key for HS512
+//        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+//    }
 	    //retrieve username from jwt token
 	    public String getUsernameFromToken(String token) {
 	        return getClaimFromToken(token, Claims::getSubject);
@@ -62,15 +65,23 @@ public class JwtTokenHelper {
 //	        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 //	                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
 //	                .signWith(SignatureAlgorithm.HS512, secret).compact();
-	        byte[] keyBytes = Keys.secretKeyFor(SignatureAlgorithm.HS512).getEncoded();
-
-	    	   return Jwts.builder()
-	                   .setClaims(claims)
-	                   .setSubject(subject)
-	                   .setIssuedAt(new Date(System.currentTimeMillis()))
-	                   .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-	                   .signWith(SignatureAlgorithm.HS512, keyBytes)
-	                   .compact();
+//	        byte[] keyBytes = Keys.secretKeyFor(SignatureAlgorithm.HS512).getEncoded();
+//
+//	    	   return Jwts.builder()
+//	                   .setClaims(claims)
+//	                   .setSubject(subject)
+//	                   .setIssuedAt(new Date(System.currentTimeMillis()))
+//	                   .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+//	                   .signWith(SignatureAlgorithm.HS512, keyBytes)
+//	                   .compact();
+	    	
+	    	 return Jwts.builder()
+	    	            .setClaims(claims)
+	    	            .setSubject(subject)
+	    	            .setIssuedAt(new Date(System.currentTimeMillis()))
+	    	            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+	    	            .signWith(SignatureAlgorithm.HS512, secret)
+	    	            .compact();
 	       }
 	    
 
