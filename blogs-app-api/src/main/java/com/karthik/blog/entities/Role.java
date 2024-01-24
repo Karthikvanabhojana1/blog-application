@@ -13,7 +13,6 @@ import lombok.Setter;
 @Entity
 public class Role {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int roleId;
 	private String role;
 

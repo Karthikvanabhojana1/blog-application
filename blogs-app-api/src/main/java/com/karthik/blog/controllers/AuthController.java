@@ -15,12 +15,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.karthik.blog.entities.User;
 import com.karthik.blog.payloads.JwtAuthRequest;
+import com.karthik.blog.payloads.UserDTO;
 import com.karthik.blog.security.CustomUserDetailsService;
 import com.karthik.blog.security.JwtAuthResponse;
 import com.karthik.blog.security.JwtAuthenticationEntryPoint;
 import com.karthik.blog.security.JwtAuthenticationFilter;
 import com.karthik.blog.security.JwtTokenHelper;
+import com.karthik.blog.services.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/init/api/v1/auth/")
@@ -34,8 +39,9 @@ public class AuthController {
 	private JwtTokenHelper jwtTokenHelper;
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	@Autowired
+	private UserService userservice;
 
-	
 	@PostMapping("/login")
 
 	
@@ -64,4 +70,21 @@ public class AuthController {
 
 		
 	}
+
+
+	@PostMapping("/register")
+		public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userdto) {
+	
+	//		if (!userservice.isEmailUnique(userdto.getEmail())) {
+	//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	//		}
+		UserDTO registeredUser= this.userservice.registerUser(userdto);
+
+			return new ResponseEntity<>(this.userservice.createUser(registeredUser), HttpStatus.CREATED);
+	
+		}
+	
+	
+	
+	
 }

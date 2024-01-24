@@ -15,6 +15,6 @@ public class CommentDTO {
 	private int id;
 	private String content;
 
-	private UserDTO user;
-	private PostDTO post;
+	private User user;
+	private Post post;
 }

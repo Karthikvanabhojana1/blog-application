@@ -23,17 +23,11 @@ public class JwtTokenHelper {
 	
 
     private SecretKey secretKey;
-//
-//    public JwtTokenHelper() {
-//        // Generate a secure key for HS512
-//        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-//    }
-	    //retrieve username from jwt token
+
 	    public String getUsernameFromToken(String token) {
 	        return getClaimFromToken(token, Claims::getSubject);
 	    }
 
-	    //retrieve expiration date from jwt token
 	    public Date getExpirationDateFromToken(String token) {
 	        return getClaimFromToken(token, Claims::getExpiration);
 	    }
@@ -43,18 +37,15 @@ public class JwtTokenHelper {
 	        return claimsResolver.apply(claims);
 	    }
 
-	    //for retrieveing any information from token we will need the secret key
 	    private Claims getAllClaimsFromToken(String token) {
 	        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 	    }
 
-	    //check if the token has expired
 	    private Boolean isTokenExpired(String token) {
 	        final Date expiration = getExpirationDateFromToken(token);
 	        return expiration.before(new Date());
 	    }
 
-	    //generate token for user
 	    public String generateToken(UserDetails userDetails) {
 	        Map<String, Object> claims = new HashMap<>();
 	        return doGenerateToken(claims, userDetails.getUsername());
@@ -62,18 +53,6 @@ public class JwtTokenHelper {
 
 	    private String doGenerateToken(Map<String, Object> claims, String subject) {
 
-//	        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-//	                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-//	                .signWith(SignatureAlgorithm.HS512, secret).compact();
-//	        byte[] keyBytes = Keys.secretKeyFor(SignatureAlgorithm.HS512).getEncoded();
-//
-//	    	   return Jwts.builder()
-//	                   .setClaims(claims)
-//	                   .setSubject(subject)
-//	                   .setIssuedAt(new Date(System.currentTimeMillis()))
-//	                   .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-//	                   .signWith(SignatureAlgorithm.HS512, keyBytes)
-//	                   .compact();
 	    	
 	    	 return Jwts.builder()
 	    	            .setClaims(claims)

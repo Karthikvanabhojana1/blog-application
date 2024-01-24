@@ -50,9 +50,9 @@ public class UserDTO {
 	@NotEmpty(message = "Your Password  must not be Empty !!")
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password must be at least 8 characters long and include at least one alphabetical character, one numeric character, and one special character (@, $, !, %, *, #, ?, or &)")
 	private String password;
-	private List<Post> post=new ArrayList<>();
-	private Set<Role> roles=new HashSet<>();
-	private List<Comment> comments=new ArrayList<>();
+//	private List<Post> post=new ArrayList<>();
+//	private Set<Role> roles=new HashSet<>();
+//	private List<Comment> comments=new ArrayList<>();
 
  
 }

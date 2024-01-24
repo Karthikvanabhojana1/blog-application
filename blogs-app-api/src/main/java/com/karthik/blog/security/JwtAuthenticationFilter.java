@@ -33,9 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		String requestToken=request.getHeader("Authorization");
 		String username=null;
 		String token=null;
-//		Bearer eyueu973827 example
 		 if (requestToken != null && requestToken.startsWith("Bearer")) {
-	            //looking good
 	            token = requestToken.substring(7);
 	            try {
 
@@ -65,7 +63,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
  	        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
 
-	            //fetch user detail from username
 	            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 	            Boolean validateToken = this.jwtTokenHelper.validateToken(token, userDetails);
 	            if (validateToken) {

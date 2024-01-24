@@ -3,35 +3,27 @@ package com.karthik.blog.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.ldap.core.support.BaseLdapPathContextSource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.config.ldap.EmbeddedLdapServerContextSourceFactoryBean;
-import org.springframework.security.config.ldap.LdapBindAuthenticationManagerFactory;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.ldap.userdetails.PersonContextMapper;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.karthik.blog.security.CustomUserDetailsService;
 import com.karthik.blog.security.JwtAuthenticationEntryPoint;
 import com.karthik.blog.security.JwtAuthenticationFilter;
 
-import jakarta.activation.DataSource;
-
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
 public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailService;
@@ -41,14 +33,26 @@ public class SecurityConfig {
     
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-    
+  
+    public static final String[] PUBLIC_URLS = {
+    		"/api/v1/auth/**",
+    		"/v3/api-docs",
+    		"/v2/api-docs",
+    		"/swagger-resources/**",
+    		"/swagger-ui/**",
+    		"/webjars/**"
+    		};
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+    	http
         .csrf()
         .disable()          
         .authorizeHttpRequests()
-        .requestMatchers("init/api/v1/auth/login").permitAll()
+//        .requestMatchers(PUBLIC_URLS).permitAll()
+        .requestMatchers("init/api/v1/auth/**").permitAll()
+//        .requestMatchers("/v3/api-docs").permitAll()
+       
+      .requestMatchers(HttpMethod.GET).permitAll()
         .anyRequest()
         .authenticated()
         .and()
@@ -61,17 +65,14 @@ public class SecurityConfig {
         http.addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-    auth.userDetailsService(this.customUserDetailService).passwordEncoder(passwordEncoder());
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+    	return (web) -> web.ignoring().requestMatchers("api-docs", "/swagger-ui/**","/swagger-resources/**",
+        		
+        		"/webjars/**");
     }
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails userDetails = User.builder().
-//                username("DURGESH")
-//                .password(passwordEncoder().encode("DURGESH")).roles("ADMIN").
-//                build();
-//        return new InMemoryUserDetailsManager(userDetails);
-//    }
+    
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

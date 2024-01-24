@@ -6,10 +6,14 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.karthik.blog.entities.Role;
 import com.karthik.blog.entities.User;
+import com.karthik.blog.payloads.AppConstant;
 import com.karthik.blog.payloads.UserDTO;
+import com.karthik.blog.repositories.RoleRepository;
 import com.karthik.blog.repositories.UserRepositories;
 import com.karthik.blog.services.UserService;
 import com.karthik.blog.exception.*;
@@ -21,6 +25,12 @@ public class UserServiceImpl implements UserService {
 	private ModelMapper modelmapper;
 	@Autowired
 	private UserRepositories userrepositories;
+	
+	@Autowired
+	private PasswordEncoder passwordencode;
+	
+	@Autowired
+	private RoleRepository rolerepository;
 
 	UserServiceImpl(ModelMapper modelmapper) {
 		this.modelmapper = modelmapper;
@@ -87,6 +97,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private UserDTO Usertodto(User user) {
+		
 		UserDTO useruserDTO = this.modelmapper.map(user, UserDTO.class);
 		return useruserDTO;
 	}
@@ -94,5 +105,17 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean isEmailUnique(String email) {
 		return userrepositories.findByEmail(email).isEmpty();
+	}
+
+	@Override
+	public UserDTO registerUser(UserDTO userdto) {
+		// TODO Auto-generated method stub
+		
+		User user = this.dtotoUser(userdto);
+		user.setPassword(passwordencode.encode(user.getPassword()));
+Role role=this.rolerepository.findById(AppConstant.USER_ROLE_NORMAL).get();
+user.getRoles().add(role);
+		User saveduser = this.userrepositories.save(user);
+		return this.Usertodto(saveduser);
 	}
 }

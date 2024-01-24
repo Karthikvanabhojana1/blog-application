@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.karthik.blog.payloads.APIResponse;
 import com.karthik.blog.payloads.CommentDTO;
@@ -20,6 +21,7 @@ import com.karthik.blog.services.CommentService;
 import jakarta.validation.constraints.NotBlank;
 
 @RestController
+@EnableWebMvc
 @RequestMapping("/api/comments")
 public class CommentController {
 	
