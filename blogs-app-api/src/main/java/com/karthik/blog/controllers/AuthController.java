@@ -1,12 +1,9 @@
 package com.karthik.blog.controllers;
 
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,13 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.karthik.blog.entities.User;
 import com.karthik.blog.payloads.JwtAuthRequest;
 import com.karthik.blog.payloads.UserDTO;
-import com.karthik.blog.security.CustomUserDetailsService;
 import com.karthik.blog.security.JwtAuthResponse;
-import com.karthik.blog.security.JwtAuthenticationEntryPoint;
-import com.karthik.blog.security.JwtAuthenticationFilter;
 import com.karthik.blog.security.JwtTokenHelper;
 import com.karthik.blog.services.UserService;
 
@@ -74,17 +67,8 @@ public class AuthController {
 
 	@PostMapping("/register")
 		public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userdto) {
-	
-	//		if (!userservice.isEmailUnique(userdto.getEmail())) {
-	//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-	//		}
 		UserDTO registeredUser= this.userservice.registerUser(userdto);
-
 			return new ResponseEntity<>(this.userservice.createUser(registeredUser), HttpStatus.CREATED);
 	
 		}
-	
-	
-	
-	
 }

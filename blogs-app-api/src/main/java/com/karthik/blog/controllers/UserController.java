@@ -32,12 +32,7 @@ public class UserController {
 	// Post-create User
 	@PostMapping("/create")
 	public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userdto) {
-
-//		if (!userservice.isEmailUnique(userdto.getEmail())) {
-//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-//		}
 		this.userservice.createUser(userdto);
-
 		return new ResponseEntity<>(this.userservice.createUser(userdto), HttpStatus.CREATED);
 
 	}
