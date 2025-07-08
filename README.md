@@ -1,17 +1,17 @@
-# 📝 Blog Application API
+# Blog Application API
 
 This is a **Spring Boot RESTful API** for a blog application, supporting core features such as user registration, authentication, post creation, comment management, and image uploads.
 
-## 🚀 Features
+## Features
 
-- 🧑 User Registration & Login (JWT Auth)
-- 📝 CRUD operations for Posts and Categories
-- 💬 Commenting on Posts
-- 📷 Upload and manage post images
-- 🔒 Role-based access (Admin/User)
-- 📁 File handling and image storage
+-  User Registration & Login (JWT Auth)
+-  CRUD operations for Posts and Categories
+-  Commenting on Posts
+-  Upload and manage post images
+-  Role-based access (Admin/User)
+-  File handling and image storage
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Backend:** Java, Spring Boot
 - **Security:** Spring Security, JWT
@@ -19,7 +19,7 @@ This is a **Spring Boot RESTful API** for a blog application, supporting core fe
 - **Build Tool:** Maven
 - **API Docs:** Swagger/OpenAPI
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 blog-application-main/
@@ -31,7 +31,7 @@ blog-application-main/
 └── README.md
 ```
 
-## 🧪 Setup & Run Locally
+##  Setup & Run Locally
 
 1. **Clone the repository**
 
@@ -61,7 +61,7 @@ blog-application-main/
    - Swagger UI: `http://localhost:8080/swagger-ui/index.html`
    - Base URL: `http://localhost:8080/api/`
 
-## 🔐 Authentication
+##  Authentication
 
 Use the `/api/auth/login` endpoint to get a JWT token. Use the token as:
 
@@ -69,7 +69,7 @@ Use the `/api/auth/login` endpoint to get a JWT token. Use the token as:
 Authorization: Bearer <your-token>
 ```
 
-## 📬 API Endpoints Overview
+##  API Endpoints Overview
 
 - `POST /api/auth/register` – Register user
 - `POST /api/auth/login` – Login
@@ -80,8 +80,8 @@ Authorization: Bearer <your-token>
 - `POST /api/posts/{id}/comments` – Add comment
 - `POST /api/upload/image` – Upload image
 
-## 👨‍💻 Author
+##  Author
 
 **Karthik Vanabhojana**  
 Graduate Student – Northeastern University  
-📧 [karthikvanabhojana@gmail.com]
+ [karthikvanabhojana@gmail.com]
