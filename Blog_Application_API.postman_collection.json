@@ -1,0 +1,774 @@
+{
+	"info": {
+		"_postman_id": "blog-app-api-collection",
+		"name": "Blog Application API",
+		"description": "Complete API collection for the Blog Application with authentication, users, posts, categories, and comments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "User Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"your_username\",\n    \"password\": \"your_password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/init/api/v1/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"init",
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Authenticate user and get JWT token"
+					},
+					"response": []
+				},
+				{
+					"name": "User Registration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"about\": \"Software Developer\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/init/api/v1/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"init",
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new user"
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for login and registration"
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Jane Doe\",\n    \"email\": \"jane@example.com\",\n    \"password\": \"password123\",\n    \"about\": \"Content Writer\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"create"
+							]
+						},
+						"description": "Create a new user (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Jane Doe Updated\",\n    \"email\": \"jane.updated@example.com\",\n    \"password\": \"newpassword123\",\n    \"about\": \"Senior Content Writer\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/update/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"update",
+								"1"
+							]
+						},
+						"description": "Update user by ID (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/getusers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"getusers"
+							]
+						},
+						"description": "Get all users (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/getusers/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"getusers",
+								"1"
+							]
+						},
+						"description": "Get user by ID (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/delete/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"delete",
+								"1"
+							]
+						},
+						"description": "Delete user by ID (requires authentication)"
+					},
+					"response": []
+				}
+			],
+			"description": "User management endpoints"
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create Category (Admin Only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categoryTitle\": \"Technology\",\n    \"categoryDescription\": \"All about technology and innovation\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"create"
+							]
+						},
+						"description": "Create a new category (requires ADMIN role)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categoryTitle\": \"Technology Updated\",\n    \"categoryDescription\": \"Updated description for technology category\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/categories/update/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"update",
+								"1"
+							]
+						},
+						"description": "Update category by ID (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories/getcatagories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"getcatagories"
+							]
+						},
+						"description": "Get all categories (public endpoint)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories/getbyId/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"getbyId",
+								"1"
+							]
+						},
+						"description": "Get category by ID (public endpoint)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category (Admin Only)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/categories/delete/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"delete",
+								"1"
+							]
+						},
+						"description": "Delete category by ID (requires ADMIN role)"
+					},
+					"response": []
+				}
+			],
+			"description": "Category management endpoints"
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Create Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "postTitle",
+									"value": "My First Blog Post",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "This is the content of my first blog post. It contains interesting information about technology.",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/user/1/category/1/posts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"1",
+								"category",
+								"1",
+								"posts"
+							]
+						},
+						"description": "Create a new post with image (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/post/getallposts?pageNumber=0&pageSize=10&sortBy=postId&sortDirection=asc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"post",
+								"getallposts"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0",
+									"description": "Page number (0-based)"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"description": "Number of posts per page"
+								},
+								{
+									"key": "sortBy",
+									"value": "postId",
+									"description": "Sort field (postId, postTitle, content, etc.)"
+								},
+								{
+									"key": "sortDirection",
+									"value": "asc",
+									"description": "Sort direction (asc or desc)"
+								}
+							]
+						},
+						"description": "Get all posts with pagination and sorting (public endpoint)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts by Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/post/category/1?pageNumber=0&pageSize=10&sortBy=postId&sortDirection=asc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"post",
+								"category",
+								"1"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0",
+									"description": "Page number (0-based)"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"description": "Number of posts per page"
+								},
+								{
+									"key": "sortBy",
+									"value": "postId",
+									"description": "Sort field"
+								},
+								{
+									"key": "sortDirection",
+									"value": "asc",
+									"description": "Sort direction"
+								}
+							]
+						},
+						"description": "Get posts by category ID with pagination and sorting (public endpoint)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts by User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/post/user/1?pageNumber=0&pageSize=10&sortBy=postId&sortDirection=asc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"post",
+								"user",
+								"1"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0",
+									"description": "Page number (0-based)"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"description": "Number of posts per page"
+								},
+								{
+									"key": "sortBy",
+									"value": "postId",
+									"description": "Sort field"
+								},
+								{
+									"key": "sortDirection",
+									"value": "asc",
+									"description": "Sort direction"
+								}
+							]
+						},
+						"description": "Get posts by user ID with pagination and sorting (public endpoint)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/post/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"post",
+								"1"
+							]
+						},
+						"description": "Get post by ID (public endpoint)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Post",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"postTitle\": \"Updated Blog Post Title\",\n    \"content\": \"This is the updated content of my blog post.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/post/update/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"post",
+								"update",
+								"1"
+							]
+						},
+						"description": "Update post by ID (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/post/delete/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"post",
+								"delete",
+								"1"
+							]
+						},
+						"description": "Delete post by ID (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/post/search/technology?pageNumber=0&pageSize=10&sortBy=postId&sortDirection=asc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"post",
+								"search",
+								"technology"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "0",
+									"description": "Page number (0-based)"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"description": "Number of posts per page"
+								},
+								{
+									"key": "sortBy",
+									"value": "postId",
+									"description": "Sort field"
+								},
+								{
+									"key": "sortDirection",
+									"value": "asc",
+									"description": "Sort direction"
+								}
+							]
+						},
+						"description": "Search posts by keyword with pagination and sorting (public endpoint)"
+					},
+					"response": []
+				}
+			],
+			"description": "Post management endpoints"
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Create Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "commentContent",
+									"value": "Great post! Very informative.",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/comments/user/1/post/1/addcomment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								"user",
+								"1",
+								"post",
+								"1",
+								"addcomment"
+							]
+						},
+						"description": "Create a new comment on a post (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/comments/comment/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								"comment",
+								"1"
+							]
+						},
+						"description": "Delete comment by ID (requires authentication)"
+					},
+					"response": []
+				}
+			],
+			"description": "Comment management endpoints"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string",
+			"description": "Base URL for the API"
+		},
+		{
+			"key": "auth_token",
+			"value": "your_jwt_token_here",
+			"type": "string",
+			"description": "JWT authentication token (obtain from login endpoint)"
+		}
+	]
+}
